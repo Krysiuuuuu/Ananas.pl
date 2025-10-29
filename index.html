@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ananas.pl — tekstowe forum</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono&family=Noto+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+  <script type="importmap">
+  {
+    "imports": {
+      "nanoid": "https://cdn.jsdelivr.net/npm/nanoid/nanoid.js"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="app" class="app">
+    <header class="topbar">
+      <div class="brand">Ananas.pl</div>
+      <div id="thread-count" style="margin-left:12px;font-size:13px;color:var(--muted)"></div>
+      <div class="top-actions">
+        <button id="new-thread-btn" class="btn">Nowy temat</button>
+        <input id="search" placeholder="Szukaj..." aria-label="Szukaj wątków">
+        <div id="auth-pane" style="display:flex;gap:8px;align-items:center;margin-left:8px">
+          <span id="current-user" style="font-size:13px;color:var(--muted)"></span>
+          <button id="login-btn" class="btn">Zaloguj</button>
+          <button id="logout-btn" class="btn" style="display:none">Wyloguj</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- BIG PC ONLY SIGN -->
+    <div class="pc-only-banner" role="note" aria-hidden="false"><strong>ONLY FOR PC!</strong></div>
+
+    <main class="main">
+      <aside class="sidebar" id="sidebar">
+        <nav class="subforum-list" id="subforum-list">
+          <!-- populated by JS -->
+        </nav>
+      </aside>
+
+      <section class="content" id="content">
+        <!-- populated by JS -->
+      </section>
+    </main>
+
+    <template id="subforum-item-tpl">
+      <button class="subforum-item">
+        <div class="sf-icon"></div>
+        <div class="sf-meta">
+          <div class="sf-title"></div>
+          <div class="sf-desc"></div>
+        </div>
+      </button>
+    </template>
+
+    <template id="thread-item-tpl">
+      <article class="thread-item">
+        <div class="thread-title"></div>
+        <div class="thread-meta"></div>
+        <div class="thread-body"></div>
+      </article>
+    </template>
+
+    <div id="modal" class="modal hidden" role="dialog" aria-hidden="true">
+      <div class="modal-inner">
+        <button id="modal-close" class="modal-close" aria-label="Zamknij">×</button>
+        <form id="thread-form" class="thread-form">
+          <h3>Nowy temat</h3>
+          <label>
+            Podforum
+            <select id="thread-subforum"></select>
+          </label>
+          <label>
+            Tytuł
+            <input id="thread-title" required maxlength="100" />
+          </label>
+          <label>
+            Treść
+            <textarea id="thread-body" required rows="6" maxlength="2000"></textarea>
+          </label>
+          <div class="form-actions">
+            <button type="submit" class="btn primary">Utwórz</button>
+            <button type="button" id="modal-cancel" class="btn">Anuluj</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <footer class="footer">Ananas.pl • Prosty tekstowy board — demo</footer>
+  </div>
+
+  <script type="module" src="data.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
