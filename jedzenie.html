@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ananas.pl — Jedzenie</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono&family=Noto+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+  <script type="importmap">{"imports":{"nanoid":"https://cdn.jsdelivr.net/npm/nanoid/nanoid.js"}}</script>
+</head>
+<body>
+  <div class="app" style="padding:18px 12px">
+    <header class="topbar"><div class="brand">Ananas.pl — Jedzenie</div></header>
+    <main class="main" style="width:100%;flex-direction:column;gap:12px">
+      <section class="content" id="content">
+        <div class="board-header">
+          <div><div class="board-title">Jedzenie</div><div class="sf-desc" style="margin-top:4px;color:var(--muted)">Przepisy i zdjęcia potraw</div></div>
+          <div><button id="open-new-thread" class="btn">Nowy temat</button></div>
+        </div>
+        <div class="threads" id="threads"></div>
+      </section>
+    </main>
+
+    <template id="thread-item-tpl">
+      <article class="thread-item"><div class="thread-title"></div><div class="thread-meta"></div><div class="thread-body"></div></article>
+    </template>
+
+    <div id="modal" class="modal hidden" role="dialog" aria-hidden="true">
+      <div class="modal-inner">
+        <button id="modal-close" class="modal-close" aria-label="Zamknij">×</button>
+        <form id="thread-form" class="thread-form">
+          <h3>Nowy temat — Jedzenie</h3>
+          <label>Tytuł<input id="thread-title" required maxlength="100" /></label>
+          <label>Treść<textarea id="thread-body" required rows="6" maxlength="2000"></textarea></label>
+          <div class="form-actions"><button type="submit" class="btn primary">Utwórz</button><button type="button" id="modal-cancel" class="btn">Anuluj</button></div>
+        </form>
+      </div>
+    </div>
+
+    <footer class="footer">Ananas.pl • Jedzenie — prosty board</footer>
+  </div>
+
+  <script type="module">
+    import { THREADS } from './data.js';
+    import { nanoid } from 'nanoid';
+    const threadsEl = document.getElementById('threads');
+    const tpl = document.getElementById('thread-item-tpl');
+    const modal = document.getElementById('modal');
+    const form = document.getElementById('thread-form');
+    const title = document.getElementById('thread-title');
+    const body = document.getElementById('thread-body');
+    const open = document.getElementById('open-new-thread');
+    const closeBtn = document.getElementById('modal-close');
+    const cancel = document.getElementById('modal-cancel');
+    const SF = 'jedzenie';
+    function render(){ const list = (THREADS[SF]||[]).slice().sort((a,b)=>b.created-a.created); threadsEl.innerHTML=''; if(!list.length){threadsEl.innerHTML='<div class="thread-item" style="color:var(--muted)">Brak tematów — rozpocznij pierwszy.</div>';return;} list.forEach(t=>{const n=tpl.content.firstElementChild.cloneNode(true);n.querySelector('.thread-title').textContent=t.title;n.querySelector('.thread-meta').textContent=`Utworzono: ${new Date(t.created).toLocaleString('pl-PL')}`;n.querySelector('.thread-body').textContent=t.body;threadsEl.appendChild(n);});}
+    open.addEventListener('click', ()=>{modal.classList.remove('hidden');modal.setAttribute('aria-hidden','false');title.focus();});
+    closeBtn.addEventListener('click', ()=>{modal.classList.add('hidden');modal.setAttribute('aria-hidden','true');form.reset();});
+    cancel.addEventListener('click', ()=>{modal.classList.add('hidden');modal.setAttribute('aria-hidden','true');form.reset();});
+    form.addEventListener('submit', e=>{e.preventDefault(); const t=title.value.trim(), b=body.value.trim(); if(!t||!b) return; const id=`${SF}-${nanoid(6)}`; THREADS[SF]=THREADS[SF]||[]; THREADS[SF].push({id,title:t,body:b,created:Date.now(),replies:[],private:false}); form.reset(); modal.classList.add('hidden'); render();});
+
+    // If page loaded with a hash (#threadId) render the single-thread view (no subforum buttons)
+    (function handleHashThread(){
+      const h = location.hash.replace(/^#/,'').trim();
+      if (!h) return;
+      const thread = (THREADS[SF]||[]).find(t=>t.id === h);
+      if (!thread) return;
+      // hide new-thread button to make the page thread-only
+      const hdrBtn = document.getElementById('open-new-thread');
+      if (hdrBtn) hdrBtn.style.display = 'none';
+      // render thread-only container
+      threadsEl.innerHTML = '';
+      const replies = (thread.replies||[]).slice().sort((a,b)=>a.created-b.created);
+      const repliesHtml = replies.map(r=>`<div style="border-top:1px solid #f0f0f0;padding:8px 0;margin-top:8px"><div style="font-weight:700">${window.formatAuthor ? window.formatAuthor(r.author) : (r.author||'Anon')}</div><div style="color:var(--muted);font-size:12px">${new Date(r.created).toLocaleString('pl-PL')}</div><div style="white-space:pre-wrap;margin-top:6px">${r.text}</div></div>`).join('');
+      const wrapper = document.createElement('div');
+      wrapper.className = 'thread-item expanded';
+      wrapper.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <div>
+            <div style="font-weight:700;font-size:18px">${thread.title}</div>
+            <div style="color:var(--muted);margin-top:6px">Utworzono: ${new Date(thread.created).toLocaleString('pl-PL')} • <strong>${thread.author || (localStorage.getItem('wyzywka_user')||'').trim() || 'Anon'}</strong></div>
+          </div>
+          <div><a href="index.html" class="btn">Powrót</a></div>
+        </div>
+        <div id="thread-body" style="white-space:pre-wrap;margin-bottom:12px">${thread.body}</div>
+        <div style="margin-top:12px;display:flex;gap:8px;align-items:center"><button id="show-reply-form" class="btn">Odpowiedz</button></div>
+        <div id="reply-area" style="margin-top:12px;display:none">
+          <textarea id="reply-text" rows="4" style="width:100%;padding:8px" placeholder="Napisz odpowiedź..."></textarea>
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
+            <button id="send-reply" class="btn primary">Wyślij</button>
+            <button id="cancel-reply" class="btn">Anuluj</button>
+          </div>
+        </div>
+        <div class="thread-replies" id="replies-container" style="margin-top:12px">${repliesHtml}</div>
+      `;
+      threadsEl.appendChild(wrapper);
+      try { const authorName = (localStorage.getItem('wyzywka_user')||'').trim() || 'Anon'; const bodyEl = document.getElementById('thread-body'); bodyEl && bodyEl.querySelectorAll && bodyEl.querySelectorAll('img').forEach(img=>{ const cap=document.createElement('div'); cap.style.fontSize='13px'; cap.style.color='var(--muted)'; cap.style.marginTop='6px'; cap.textContent = `autor: ${window.formatAuthor ? window.formatAuthor(thread.author || authorName) : (thread.author || authorName)}`; img.insertAdjacentElement('afterend', cap); }); } catch(e){}
+      // AI reply feature removed.
+    })();
+  </script>
+</body>
+</html>
