@@ -1,0 +1,277 @@
+:root {
+    --black: #0f1c1f;
+    --black-lighter: #1f3b42;
+    --black-darker: #141a1a;
+    --light: #fff;
+    --light-darker: #f9f9f9;
+    --grey: #666666;
+    --accent: #7eb5ac;
+    --accent-darker: #fff;
+    --greentext: #669f96;
+    --soft-blue: #e9f2fb; /* low-saturation blue background */
+    --btn-bg: #e6f0fb;    /* button background */
+    --btn-border: #bcd6f0; /* button border */
+    --btn-accent: #4e7fbf; /* button accent (text or primary) */
+}
+input[type="checkbox" i] {
+    display: none;
+}
+body {
+    font-family: 'Open Sans Semibold' !important;
+    font-size: 16px;
+}
+
+/* html */
+body,
+html {
+    background: var(--light-darker);
+}
+body.is_index,
+body.is_thread {
+    background: var(--light-darker);
+    color: var(--grey);
+    margin: 3% 5%;
+}
+
+/* PC-only banner */
+.pc-only-banner {
+  text-align: center;
+  margin: 12px 0;
+  color: var(--black);
+  font-weight: 700;
+  font-size: 34px; /* increased */
+  letter-spacing: 0.6px;
+}
+.pc-only-banner strong {
+  display: inline-block;
+  font-size: 56px; /* made much larger */
+  padding: 10px 18px;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--black);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* Thread count prominent, centered and bold */
+#thread-count {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 32px; /* increased */
+  font-weight: 900; /* bolder */
+  color: var(--black);
+  margin-top: 10px;
+}
+
+#header-bar {
+    background: var(--accent);
+}
+
+
+div.board {
+    background: var(--light);
+}
+div.thread {
+    padding: 3%;
+}
+#shortcuts {
+    margin-right: 2% !important;
+}
+:root:not(.werkTyme) .catalog-thread.watched .catalog-thumb,
+ :root:root.werkTyme .catalog-thread.watched:not(:hover),
+ :root:root.werkTyme:not(.catalog-hover-expand) .catalog-thread.watched,
+ :root.werkTyme.catalog-hover-expand .catalog-thread.watched > .catalog-container:hover > .catalog-post {
+    border-color: var(--light-darker);
+}
+:root.yotsuba-b.catalog-hover-expand .catalog-container:hover > .post {
+    padding: 10px !important;
+    width: auto;
+}
+:root.yotsuba .replies-quoting-you > a,
+ :root.yotsuba #watcher-link.replies-quoting-you {
+    color: var(--accent);
+}
+:root.yotsuba:not(.fixed) #header-bar,
+ :root.yotsuba #notifications,
+ :root.yotsuba #board-list a,
+ :root.yotsuba #shortcuts a,
+ :root.yotsuba-b #board-list a,
+ :root.yotsuba-b #shortcuts a {
+    color: var(--accent);
+    width: 100%;
+}
+:root.yotsuba #header-bar.dialog {
+    background-color: var(--light);
+}
+
+a.current {
+    color: var(--black) !important;
+}
+#watched-threads .watcher-link {
+    color: var(--light-darker);
+}
+:root.yotsuba.catalog-hover-expand .catalog-container:hover > .post {
+    padding: 10px !important;
+    width: auto;
+}
+:root.yotsuba-b .replies-quoting-you > a,
+ :root.yotsuba-b #watcher-link.replies-quoting-you,
+ :root.yotsuba .replies-quoting-you > a,
+ :root.yotsuba-b #watcher-link.replies-quoting-you {
+    color: var(--accent) !important;
+}
+div#header-bar.dialog.autohide {
+    background-color: var(--light)!important;
+    border: 0!important;
+    padding: 20px 0;
+}
+:root.centered-links #shortcuts {
+    width: auto!important;
+}
+:root.yotsuba.werkTyme .catalog-thread:not(:hover),
+ :root.yotsuba.werkTyme:not(.catalog-hover-expand) .catalog-thread,
+ :root.yotsuba.catalog-hover-expand .catalog-container:hover > .post,
+ :root.yotsuba.catalog-hover-expand .catalog-container:hover .catalog-reply {
+    border-color: var(--black-lighter);
+    padding: 10px;
+}
+body > div.boardBanner > div.boardTitle {
+    font-family: 'Roboto Slab', monospace!important;
+    font-size: 28px;
+    color: var(--light);
+    margin: 40px 0 10px!important;
+}
+#bannerCnt {
+    margin-bottom: 20px;
+    border-color: var(--black-lighter)!important;
+}
+:root.yotsuba-b .watch-thread-link,
+ :root.yotsuba .watch-thread-link {
+    background-image: url(https://x.eti.tf/YAxqZ.svg);
+    opacity: 1;
+}
+:root.yotsuba-b .watch-thread-link.watched,
+ :root.yotsuba .watch-thread-link.watched {
+    background-image: url(https://x.eti.tf/roU3b.svg);
+}
+.current {
+    font-weight: 400!important;
+    color: var(--accent)!important;
+}
+table.exif td {
+    color: var(--light)!important;
+    padding: 0 0 3px;
+}
+table.exif {
+    margin-top: 15px;
+}
+.qr-link-container + #togglePostFormLink,
+#shortcut-qr {
+    display: none;
+    content: none;
+}
+/* hover over a reply thing */
+div#qp.dialog {
+    border: 7px solid var(--light-darker);
+    background-color: var(--light);
+    padding: 5px 30px;
+}
+div.postContainer.opContainer {
+    padding: 20px;
+}
+div.post.op.qphl {
+    background: transparent;
+}
+#thread-watcher {
+    background-color: var(--black-lighter);
+    color: var(--accent-darker)!important;
+    border: 2px dashed var(--accent);
+    box-shadow: none;
+    padding: 10px;
+}
+
+/* modal */
+.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.35);padding:20px}
+.modal.hidden{display:none}
+.modal-inner{background:#fff;padding:18px;border-radius:10px;max-width:720px;width:100%;position:relative}
+.modal-close{position:absolute;right:10px;top:6px;border:0;background:transparent;font-size:24px;cursor:pointer}
+.thread-form label{display:block;margin-bottom:10px;font-size:14px}
+.form-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:8px}
+
+/* button styles: subtle flat blue look, no rising on hover */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--btn-bg);
+  /* Use Noto Sans for buttons for clarity and a slightly darker blue text color */
+  font-family: 'Noto Sans', 'Space Mono', sans-serif;
+  color: #2b6f93;
+  border: 1px solid var(--btn-border);
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 120ms linear, box-shadow 120ms linear, transform 120ms linear;
+  box-shadow: none;
+  text-decoration: none;
+}
+
+/* primary variant */
+.btn.primary {
+  background: linear-gradient(180deg, rgba(78,127,191,0.08), rgba(78,127,191,0.05));
+  border-color: rgba(78,127,191,0.25);
+  color: #174e6f; /* slightly stronger color for primary variant */
+  font-weight: 700;
+}
+
+/* subtle hover (no rising) */
+.btn:hover {
+  background: #eaf6ff;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+}
+
+/* active press */
+.btn:active {
+  transform: translateY(0);
+  background: #e3eefc;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
+}
+
+/* muted small buttons */
+.btn.small {
+  padding: 6px 8px;
+  font-size: 13px;
+}
+
+/* responsive */
+@media(max-width:920px){
+  .main{flex-direction:column;padding:12px;width:100%}
+  .sidebar{order:2;width:100%}
+  .content{order:1}
+  .top-actions input{display:none}
+  .topbar{width:100%;border-radius:0}
+}
+
+/* Make sizes responsive on narrow screens so they don't overwhelm mobile */
+@media(max-width:920px){
+  .pc-only-banner { font-size: 20px; }
+  .pc-only-banner strong { font-size: 32px; padding: 6px 10px; }
+  #thread-count { font-size: 18px; }
+}
+
+/* Apply the low-saturation blue background to page areas while keeping card backgrounds white */
+body, html {
+  background: var(--soft-blue);
+}
+.app, .modal-inner, .thread-item, .board-header, .threads, .sidebar, .content {
+  background: transparent;
+}
+.modal-inner, .thread-item, .board-header {
+  background: var(--light);
+}
+
+/* End of edits */
