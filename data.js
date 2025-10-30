@@ -1,3 +1,8 @@
+/* CLEANED & FIXED version of data.js
+   - Removed duplicate `const _loaded = ...` declaration which caused a SyntaxError.
+   - Ensured loadSavedThreads is called only once and ensurePublicThreads runs on the loaded data.
+   - Kept existing exports and behavior (THREADS exported as proxied THREADS_PROXY).
+*/
 export const SUBFORUMS = [
   { id: 'random', title: 'Random', desc: 'Dowolne tematy', icon: '🎲' },
   { id: 'polska', title: 'Polska', desc: 'Sprawy krajowe', icon: '🇵🇱' },
@@ -45,13 +50,15 @@ function loadSavedThreads(seed) {
 }
 
 // Replace THREADS with loaded data so imports keep same reference
-const _loaded = loadSavedThreads(THREADS);
+// (Call loadSavedThreads once and reuse the result)
+const loaded = loadSavedThreads(THREADS);
+
 /* Ensure every thread is explicitly marked public (private: false) so threads are visible to everyone */
-Object.keys(_loaded).forEach(k => {
-  (_loaded[k]||[]).forEach(t => { if (t && typeof t.private === 'undefined') t.private = false; });
+Object.keys(loaded).forEach(k => {
+  (loaded[k]||[]).forEach(t => { if (t && typeof t.private === 'undefined') t.private = false; });
 });
 Object.keys(THREADS).forEach(k => delete THREADS[k]);
-Object.assign(THREADS, _loaded);
+Object.assign(THREADS, loaded);
 
 /* NEW: create a Proxy around THREADS so any mutation triggers saveThreadsToStorage automatically.
    This ensures threads created from any page (including per-subforum assets) are persisted. */
@@ -203,6 +210,5 @@ function ensurePublicThreads(threadsObj) {
   });
 }
 
-// After merging loaded data with seeded THREADS, call:
-const _loaded = loadSavedThreads(THREADS);
-ensurePublicThreads(_loaded);
+// After merging loaded data with seeded THREADS, call ensurePublicThreads on the loaded data
+ensurePublicThreads(loaded);
