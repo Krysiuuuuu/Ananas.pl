@@ -183,3 +183,26 @@ export function isThreadVisible(thread) {
   try { return thread && thread.private !== true; } catch (e) { return true; }
 }
 if (typeof window !== 'undefined') window.isThreadVisible = isThreadVisible;
+
+// --- ensure every thread and reply is explicitly public after loading ---
+function ensurePublicThreads(threadsObj) {
+  Object.keys(threadsObj).forEach(boardId => {
+    const list = threadsObj[boardId] || [];
+    list.forEach(thread => {
+      // Mark thread public
+      thread.private = false;
+      // If replies exist, mark them public too (defensive)
+      if (Array.isArray(thread.replies)) {
+        thread.replies.forEach(reply => {
+          if (typeof reply === 'object' && reply !== null) {
+            reply.private = false;
+          }
+        });
+      }
+    });
+  });
+}
+
+// After merging loaded data with seeded THREADS, call:
+const _loaded = loadSavedThreads(THREADS);
+ensurePublicThreads(_loaded);
